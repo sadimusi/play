@@ -327,8 +327,8 @@ public class Router {
     }
 
     // Gets baseUrl from current request or application.baseUrl in application.conf
-    protected static String getBaseUrl() {
-        if (Http.Request.current() == null) {
+    public static String getBaseUrl() {
+        if (Http.Request.current() == null || Play.configuration.getProperty("application.forceBaseUrl", "off").equals("on")) {
             // No current request is present - must get baseUrl from config
             String appBaseUrl = Play.configuration.getProperty("application.baseUrl", "application.baseUrl");
             if (appBaseUrl.endsWith("/")) {

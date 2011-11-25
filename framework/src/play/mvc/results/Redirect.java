@@ -4,6 +4,7 @@ import play.exceptions.UnexpectedException;
 import play.mvc.Http;
 import play.mvc.Http.Request;
 import play.mvc.Http.Response;
+import play.mvc.Router;
 
 /**
  * 302 Redirect
@@ -33,9 +34,9 @@ public class Redirect extends Result {
             if (url.startsWith("http")) {
                 //
             } else if (url.startsWith("/")) {
-                url = String.format("http%s://%s%s%s", request.secure ? "s" : "", request.domain, (request.port == 80 || request.port == 443) ? "" : ":" + request.port, url);
+                url = String.format("%s%s", Router.getBaseUrl(), url);
             } else {
-                url = String.format("http%s://%s%s%s%s", request.secure ? "s" : "", request.domain, (request.port == 80 || request.port == 443) ? "" : ":" + request.port, request.path, request.path.endsWith("/") ? url : "/" + url);
+                url = String.format("%s%s%s", Router.getBaseUrl(), request.path, request.path.endsWith("/") ? url : "/" + url);
             }
             response.status = code;
             response.setHeader("Location", url);
